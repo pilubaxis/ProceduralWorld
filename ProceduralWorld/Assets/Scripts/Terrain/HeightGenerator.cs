@@ -19,11 +19,13 @@ public class HeightGenerator : MonoBehaviour
     }
 
     [SerializeField] private TerrainGenerator generator;
+    private TerrainCollider col;
     private ChunkManager chunkManager;
 
     void Awake()
     {
         chunkManager = GetComponent<ChunkManager>();
+        col = GetComponent<TerrainCollider>();
         //GenerateTerrain();
     }
 
@@ -33,7 +35,9 @@ public class HeightGenerator : MonoBehaviour
     public void GenerateTerrain()
     {
         Terrain terrain = GetComponent<Terrain>();
-        terrain.terrainData = GenerateTerrainData();
+        TerrainData data = GenerateTerrainData();
+        terrain.terrainData = data;
+        col.terrainData = data;
     }
 
     /// <summary>

@@ -9,6 +9,23 @@ public class TerrainGenerator : MonoBehaviour
     public int chunkSize = 100;
     [SerializeField] private Vector2Int middleChunk = new Vector2Int(0, 0);
 
+    [Header("Player")]
+    [SerializeField] Transform playertransform = null;
+    public Vector2Int playerChunkCheck = Vector2Int.zero;
+
+
+    public Vector2Int PlayerCurrentChunk
+    {
+        get { return playerCurrentChunk; } 
+        
+        set {
+            Vector2Int direction = value - playerCurrentChunk;
+            playerCurrentChunk = value;
+            UpdateChunkCoord(direction);
+        }
+    }
+    private Vector2Int playerCurrentChunk = Vector2Int.zero;
+
 
     void Start()
     {
@@ -18,6 +35,13 @@ public class TerrainGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerChunkCheck = new Vector2Int(Mathf.FloorToInt(playertransform.position.x / chunkSize), Mathf.FloorToInt(playertransform.position.z / chunkSize));
+
+        if (PlayerCurrentChunk != playerChunkCheck)
+        {
+            PlayerCurrentChunk = playerChunkCheck;
+        }
+
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             UpdateChunkCoord(new Vector2Int(1, 0)); // Move chunks to the right
