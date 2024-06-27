@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
@@ -26,9 +27,13 @@ public class TerrainGenerator : MonoBehaviour
     }
     private Vector2Int playerCurrentChunk = Vector2Int.zero;
 
+    //refs
+    private ObjectsManager objectsmanager = null;
+
 
     void Start()
     {
+        objectsmanager = GetComponent<ObjectsManager>();
         SetUpChunks();
     }
 
@@ -40,23 +45,6 @@ public class TerrainGenerator : MonoBehaviour
         if (PlayerCurrentChunk != playerChunkCheck)
         {
             PlayerCurrentChunk = playerChunkCheck;
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            UpdateChunkCoord(new Vector2Int(1, 0)); // Move chunks to the right
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            UpdateChunkCoord(new Vector2Int(-1, 0)); // Move chunks to the left
-        }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            UpdateChunkCoord(new Vector2Int(0, 1)); // Move chunks up
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            UpdateChunkCoord(new Vector2Int(0, -1)); // Move chunks down
         }
     }
 
@@ -83,6 +71,7 @@ public class TerrainGenerator : MonoBehaviour
             // Set the chunk's position in the world
             chunks[i].ChunkCord = new Vector2Int(chunkPosition.x, chunkPosition.y);
             chunks[i].GetComponent<HeightGenerator>().GenerateTerrain();
+            objectsmanager.PopulateChunk(chunks[i]);
         }
     }
 
@@ -100,13 +89,21 @@ public class TerrainGenerator : MonoBehaviour
         {
             if (direction.x != 0 && chunks[i].ChunkCord.x == cordToDestroy.x)
             {
+                objectsmanager.UnpopulateChunk(chunks[i]);
+
                 chunks[i].ChunkCord += direction * 3;
                 chunks[i].GetComponent<HeightGenerator>().GenerateTerrain();
+
+                objectsmanager.PopulateChunk(chunks[i]);
             }
             else if (direction.y != 0 && chunks[i].ChunkCord.y == cordToDestroy.y)
             {
+                objectsmanager.UnpopulateChunk(chunks[i]);
+
                 chunks[i].ChunkCord += direction * 3;
                 chunks[i].GetComponent<HeightGenerator>().GenerateTerrain();
+
+                objectsmanager.PopulateChunk(chunks[i]);
             }
         }
     }

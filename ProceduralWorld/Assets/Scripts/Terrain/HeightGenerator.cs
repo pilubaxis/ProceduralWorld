@@ -62,7 +62,7 @@ public class HeightGenerator : MonoBehaviour
     /// <returns>height array</returns>
     float[,] GenerateHeights(int resolution)
     {
-        Debug.Log("OFF SET: " + OffsetX + " " + OffsetY);
+        //Debug.Log("OFF SET: " + OffsetX + " " + OffsetY);
         float[,] heights = new float[resolution, resolution];
         for (int x = 0; x < resolution; x++)
         {

@@ -11,10 +11,42 @@ public class ChunkManager : MonoBehaviour
             chunkCord = value; 
         }
     }
+
+    /// <summary>
+    /// Chunk world position min limit
+    /// </summary>
+    public Vector3 ChunkMinLimit
+    {
+        get { return new Vector3(ChunkCord.x * genarator.chunkSize, 0, ChunkCord.y * genarator.chunkSize); }
+    }
+
+    /// <summary>
+    /// Chunk world position max limit
+    /// </summary>
+    public Vector3 ChunkMaxLimit
+    {
+        get { return new Vector3((ChunkCord.x + 1)* genarator.chunkSize, 0, (ChunkCord.y  + 1) * genarator.chunkSize); }
+    }
+
+    /// <summary>
+    /// Objects the chunk possess
+    /// </summary>
+    public List<List<GameObject>> chunkObjects = new List<List<GameObject>>();
+
     private Vector2Int chunkCord = new Vector2Int();
 
     // References
     [SerializeField] private TerrainGenerator genarator;
+    [SerializeField] private ObjectsManager objectsMan;
+
+
+    //private void Start()
+    //{
+    //    for (int i = 0; i < objectsMan.objects.Count; i++)
+    //    {
+    //        chunkObjects.Add(new List<GameObject>());
+    //    }
+    //}
 
     /// <summary>
     /// Set the Chunk Size
@@ -38,4 +70,6 @@ public class ChunkManager : MonoBehaviour
 
         transform.position = new Vector3(cord.x * chunkSize, 0, cord.y * chunkSize);
     }
+
+
 }
